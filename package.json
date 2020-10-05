@@ -1,7 +1,7 @@
 {
-  "name": "time-trial-viewer-frontend",
+  "name": "checkpoint-finder",
   "version": "1.0.0",
-  "description": "Frontend pages for a Timetrial viewer app. Used with time-trial-viewer-server",
+  "description": "This web application is used to research the positions of: start points, end points and check points.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
