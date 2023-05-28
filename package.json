@@ -13,9 +13,7 @@
   "dependencies": {
     "geodesy": "^2.2.1",
     "ol": "^6.4.3",
-    "ol-layerswitcher": "^3.8.2"
-  },
-  "devDependencies": {
-    "parcel-bundler": "^1.12.4"
+    "ol-layerswitcher": "^3.8.2",
+    "parcel": "^2.9.1"
   }
 }
