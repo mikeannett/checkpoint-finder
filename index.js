@@ -15,7 +15,8 @@ import VectorSource from 'ol/source/Vector';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import LayerSwitcher from 'ol-layerswitcher';
-import OsGridRef from 'mt-osgridref';
+import OsGridRef, { LatLon } from 'geodesy/osgridref.js';
+//import OsGridRef from 'mt-osgridref';
 
 // Hack used to avoid reload errors caused by hot loading before parcel has finshed preparing the distribution.
 if (module.hot) {
@@ -129,10 +130,8 @@ const map=drawMap();
 
 // Code to support page's Convert section
 const osGridRef = document.getElementById("osGridRef");
-// const convertButton = document.getElementById("convertButton");
 const latLong = document.getElementById("LatLong");
 const convertCopyDown = document.getElementById("convertCopyDown");
-// convertButton.onclick = convertButtonHandler;
 convertCopyDown.onclick = convertCopyDownHandler;
 osGridRef.addEventListener('change', convertButtonHandler);
 
@@ -146,7 +145,8 @@ function convertButtonHandler() {
 function convertOsToLatLong1(osGrid) {
   // SK188850
   const gridref = OsGridRef.parse(osGrid);
-  const latlon = OsGridRef.osGridToLatLong(gridref);
+  //const latlon = OsGridRef.osGridToLatLong(gridref);
+  const latlon = gridref.toLatLon();  // default is pWgs84
   return latlon;
 }
 
@@ -237,6 +237,7 @@ function displayPoint( point, highlight ){
 // Display all points on the map
 function displayPoints(){
   let counter=0;
+  let collection="";
   markerLayer.getSource().clear();
 
   for(let i=1;i<=tableLen;i++) {
@@ -244,6 +245,7 @@ function displayPoints(){
     const point=parseLatLong(ll.value);
     if (point) {
       displayPoint(point);
+      collection=`${collection}${counter==0?"":", "}[${ll.value}]`;
       counter++;
     }
   }
@@ -251,8 +253,11 @@ function displayPoints(){
   {
     let layerExtent = markerLayer.getSource().getExtent();
     if (layerExtent) {
-      map.getView().fit(layerExtent);
+      centreAndZoom(layerExtent)
     }
+
+    let collectionPoint = document.getElementById("collectionPoint");
+    collectionPoint.innerText=collection;
   }
 }
 
@@ -377,4 +382,17 @@ function calcBearing(point1, point2) {
   const brng = (θ*180/Math.PI + 360) % 360; // in degrees
 
   return brng;
+}
+
+// Centre and zoom map to the specified activity.
+function centreAndZoom(extent) {
+  // add 5% to the extent otherwise activity is pressed up against the side of the map
+  var bitMore=(extent[0]-extent[2])*0.05;
+  extent[0]+=bitMore
+  extent[2]-=bitMore
+  bitMore=(extent[1]-extent[3])*0.05;
+  extent[1]+=bitMore
+  extent[3]-=bitMore
+
+  map.getView().fit(extent, map.getSize());
 }

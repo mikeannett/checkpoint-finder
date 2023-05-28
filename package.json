@@ -11,9 +11,9 @@
   "author": "Mike Annett <mike.annett2@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "mt-osgridref": "^0.1.0",
-    "ol": "^6.3.1",
-    "ol-layerswitcher": "^3.6.0"
+    "geodesy": "^2.2.1",
+    "ol": "^6.4.3",
+    "ol-layerswitcher": "^3.8.2"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.4"
